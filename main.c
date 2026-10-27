@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+// Похибка повинна бути в межах 0.00001 ≤ err ≤ 0.001
+#define MAX_INTEGRATION_ERROR 0.000017
+
 void part1();
 void part2();
 double f(double x);
@@ -14,6 +17,7 @@ void insertColumn(double source[3], double destination[3][3], unsigned int colum
 double getIntgr3PointParabola(double points[3][2], double start, double end);
 void copyMatrix(double source[3][3], double destination[3][3]);
 double det(double matrix[3][3]);
+void printMatrix(double matrix[3][3]);
 void pressEnterToContinue();
 
 int main()
@@ -75,14 +79,10 @@ void part1()
     scanf("%lf", &x);
 
     //Обчислення залежної зміни y
-    if(0 <= x && x <5)
-        y = (x-1)/(x+1);
-    else if(5 <= x && x < 25)
-        5*x+10;
-    else if(100 <= x && x < 125)
-        x/sqrt(x+pow(x,2))-4*pow(x,3);
-    else
-        x/10 + 4;
+    if(0 <= x && x < 5) y = (x - 1) / (x + 1);
+    else if(5 <= x && x < 25) y = 5 * x + 10;
+    else if(100 <= x && x < 125) y = x / sqrt(x + pow(x, 2)) - 4 * pow(x, 3);
+    else y = x / 10 + 4;
 
     printf("Обчислена залежна зміна y: %.2lf\n", y);
     pressEnterToContinue();
@@ -100,6 +100,123 @@ void part2()
            " | ------\n"
            " / (x+2)²\n"
            " 0\n");
+
+    double results[60] =
+    {
+         integrLeftSquareMethod(f, 10, 0, 1),
+         integrLeftSquareMethod(f, 12, 0, 1),
+         integrLeftSquareMethod(f, 10, 0, 1) - integrLeftSquareMethod(f, 12, 0, 1),
+
+         integrRightSquareMethod(f, 10, 0, 1),
+         integrRightSquareMethod(f, 12, 0, 1),
+         integrRightSquareMethod(f, 10, 0, 1) - integrRightSquareMethod(f, 12, 0, 1),
+
+         integrTrapezoidMethod(f, 10, 0, 1),
+         integrTrapezoidMethod(f, 12, 0, 1),
+         integrTrapezoidMethod(f, 10, 0, 1) - integrTrapezoidMethod(f, 12, 0, 1),
+
+         integrParabolaMethod(f, 10, 0, 1),
+         integrParabolaMethod(f, 12, 0, 1),
+         integrParabolaMethod(f, 10, 0, 1) - integrParabolaMethod(f, 12, 0, 1),
+
+
+         integrLeftSquareMethod(f, 20, 0, 1),
+         integrLeftSquareMethod(f, 22, 0, 1),
+         integrLeftSquareMethod(f, 20, 0, 1) - integrLeftSquareMethod(f, 12, 0, 1),
+
+         integrRightSquareMethod(f, 20, 0, 1),
+         integrRightSquareMethod(f, 22, 0, 1),
+         integrRightSquareMethod(f, 20, 0, 1) - integrRightSquareMethod(f, 12, 0, 1),
+
+         integrTrapezoidMethod(f, 20, 0, 1),
+         integrTrapezoidMethod(f, 22, 0, 1),
+         integrTrapezoidMethod(f, 20, 0, 1) - integrTrapezoidMethod(f, 12, 0, 1),
+
+         integrParabolaMethod(f, 20, 0, 1),
+         integrParabolaMethod(f, 22, 0, 1),
+         integrParabolaMethod(f, 20, 0, 1) - integrParabolaMethod(f, 12, 0, 1),
+
+         integrLeftSquareMethod(f, 50, 0, 1),
+         integrLeftSquareMethod(f, 52, 0, 1),
+         integrLeftSquareMethod(f, 50, 0, 1) - integrLeftSquareMethod(f, 12, 0, 1),
+
+         integrRightSquareMethod(f, 50, 0, 1),
+         integrRightSquareMethod(f, 52, 0, 1),
+         integrRightSquareMethod(f, 50, 0, 1) - integrRightSquareMethod(f, 12, 0, 1),
+
+         integrTrapezoidMethod(f, 50, 0, 1),
+         integrTrapezoidMethod(f, 52, 0, 1),
+         integrTrapezoidMethod(f, 50, 0, 1) - integrTrapezoidMethod(f, 12, 0, 1),
+
+         integrParabolaMethod(f, 50, 0, 1),
+         integrParabolaMethod(f, 52, 0, 1),
+         integrParabolaMethod(f, 50, 0, 1) - integrParabolaMethod(f, 12, 0, 1),
+
+         integrLeftSquareMethod(f, 100, 0, 1),
+         integrLeftSquareMethod(f, 102, 0, 1),
+         integrLeftSquareMethod(f, 100, 0, 1) - integrLeftSquareMethod(f, 102, 0, 1),
+
+         integrRightSquareMethod(f, 100, 0, 1),
+         integrRightSquareMethod(f, 102, 0, 1),
+         integrRightSquareMethod(f, 100, 0, 1) - integrRightSquareMethod(f, 102, 0, 1),
+
+         integrTrapezoidMethod(f, 100, 0, 1),
+         integrTrapezoidMethod(f, 102, 0, 1),
+         integrTrapezoidMethod(f, 100, 0, 1) - integrTrapezoidMethod(f, 102, 0, 1),
+
+         integrParabolaMethod(f, 100, 0, 1),
+         integrParabolaMethod(f, 102, 0, 1),
+         integrParabolaMethod(f, 100, 0, 1) - integrParabolaMethod(f, 102, 0, 1),
+
+         integrLeftSquareMethod(f, 1000, 0, 1),
+         integrLeftSquareMethod(f, 1002, 0, 1),
+         integrLeftSquareMethod(f, 1000, 0, 1) - integrLeftSquareMethod(f, 1002, 0, 1),
+
+         integrRightSquareMethod(f, 1000, 0, 1),
+         integrRightSquareMethod(f, 1002, 0, 1),
+         integrRightSquareMethod(f, 1000, 0, 1) - integrRightSquareMethod(f, 1002, 0, 1),
+
+         integrTrapezoidMethod(f, 1000, 0, 1),
+         integrTrapezoidMethod(f, 1002, 0, 1),
+         integrTrapezoidMethod(f, 1000, 0, 1) - integrTrapezoidMethod(f, 1002, 0, 1),
+
+         integrParabolaMethod(f, 1000, 0, 1),
+         integrParabolaMethod(f, 1002, 0, 1),
+         integrParabolaMethod(f, 1000, 0, 1) - integrParabolaMethod(f, 1002, 0, 1),
+    };
+
+    printf("Межа помилки: %.3e\n", MAX_INTEGRATION_ERROR);
+    printf("N - кількість проміжків\n");
+
+    printf("\n                                      N = 10      N + 2 = 12         Різниця Входить в межі помилки?\n");
+    printf(" Метод лівих прямокутників:  %15.7e %15.7e %15.7e %s\n", results[0], results[1], results[2], fabs(results[2]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[3], results[4], results[5], fabs(results[5]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[6], results[7], results[8], fabs(results[8]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[9], results[10], results[11], fabs(results[11]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+
+    printf("\n                                      N = 20      N + 2 = 22         Різниця Входить в межі помилки?\n");
+    printf(" Метод лівих прямокутників:  %15.7e %15.7e %15.7e %s\n", results[12], results[13], results[14], fabs(results[14]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[15], results[16], results[17], fabs(results[17]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[18], results[19], results[20], fabs(results[20]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[21], results[22], results[23], fabs(results[23]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+
+    printf("\n                                      N = 50      N + 2 = 52         Різниця Входить в межі помилки?\n");
+    printf(" Метод лівих прямокутників:  %15.7e %15.7e %15.7e %s\n", results[24], results[25], results[26], fabs(results[26]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[27], results[28], results[29], fabs(results[29]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[30], results[31], results[32], fabs(results[32]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[33], results[34], results[35], fabs(results[35]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+
+    printf("\n                                     N = 100     N + 2 = 102         Різниця Входить в межі помилки?\n");
+    printf(" Метод лівих прямокутників:  %15.7e %15.7e %15.7e %s\n", results[36], results[37], results[38], fabs(results[38]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[39], results[40], results[41], fabs(results[41]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[42], results[43], results[44], fabs(results[43]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[45], results[46], results[47], fabs(results[47]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+
+    printf("\n                                    N = 1000    N + 2 = 1002         Різниця Входить в межі помилки?\n");
+    printf(" Метод лівих прямокутників:  %15.7e %15.7e %15.7e %s\n", results[48], results[49], results[50], fabs(results[50]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[51], results[52], results[53], fabs(results[53]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[54], results[55], results[56], fabs(results[56]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+    printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[57], results[58], results[59], fabs(results[59]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
 
     pressEnterToContinue();
 }
@@ -215,7 +332,16 @@ double integrParabolaMethod(double (*f)(double), unsigned int n, double a, doubl
 
     ( a * pow(end, 3) / 3 + b * pow(end, 2) / 2 + c * end ) - ( a * pow(start, 3) / 3 + b * pow(start, 2) / 2 + c * start )
 
-
+    Для роботи з матрицями надалі використано двухвимірний масив, де:
+           номер стовпя
+           |
+          \|/
+           V
+    points[0][0]
+              ʌ
+             /|\
+              |
+              номер рядка
     */
 double getIntgr3PointParabola(double points[3][2], double start, double end)
 {
@@ -246,27 +372,34 @@ double getIntgr3PointParabola(double points[3][2], double start, double end)
     copyMatrix(matrix_A, matrix_temp);
     insertColumn(matrix_B, matrix_temp, 0);
     a = det(matrix_temp) / det(matrix_A);
+    //printf("det: %.2lf\n",a);
 
     copyMatrix(matrix_A, matrix_temp);
     insertColumn(matrix_B, matrix_temp, 1);
     b = det(matrix_temp) / det(matrix_A);
+    //printf("det: %.2lf\n",b);
 
     copyMatrix(matrix_A, matrix_temp);
     insertColumn(matrix_B, matrix_temp, 2);
     c = det(matrix_temp) / det(matrix_A);
+    //printf("det: %.2lf\n",c);
 
     return ( a * pow(end, 3) / 3 + b * pow(end, 2) / 2 + c * end )
     - ( a * pow(start, 3) / 3 + b * pow(start, 2) / 2 + c * start );
 }
 
+// Замінює стовпець column матриці destination вектором source
 void insertColumn(double source[3], double destination[3][3], unsigned int column)
 {
     if(column > 2)column = 2;
     for(int i = 0; i < 3; i++){
         destination[column][i] = source[i];
     }
+    //printf("\ninsert\n");
+    //printMatrix(destination);
 }
 
+// Копіює матрицю souse в destination
 void copyMatrix(double source[3][3], double destination[3][3])
 {
     for(int i = 0; i < 3; i++){
@@ -274,11 +407,19 @@ void copyMatrix(double source[3][3], double destination[3][3])
             destination[i][j] = source[i][j];
         }
     }
+    //printf("\ncopy\n");
+    //printMatrix(destination);
 }
 
+// Обчислює детермінант матриці
 double det(double matrix[3][3])
 {
-    return 0;
+    return matrix[0][0] * matrix[1][1] * matrix[2][2]
+    + matrix[1][0] * matrix[2][1] * matrix[0][2]
+    + matrix[2][0] * matrix[0][1] * matrix[1][2]
+    - matrix[2][0] * matrix[1][1] * matrix[0][2]
+    - matrix[1][0] * matrix[0][1] * matrix[2][2]
+    - matrix[0][0] * matrix[2][1] * matrix[1][2];
 }
 
 //Очікує Enter від користувача щоб продовжити
@@ -290,4 +431,13 @@ void pressEnterToContinue()
     while ((c = getchar()) != '\n' && c != EOF);
 
     getchar();
+}
+void printMatrix(double matrix[3][3])
+{
+    printf("\n%.2lf %.2lf %.2lf\n"
+           "%.2lf %.2lf %.2lf\n"
+           "%.2lf %.2lf %.2lf\n",
+           matrix[0][0], matrix[1][0], matrix[2][0],
+           matrix[0][1], matrix[1][1], matrix[2][1],
+           matrix[0][2], matrix[1][2], matrix[2][2]);
 }
