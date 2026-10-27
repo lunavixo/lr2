@@ -185,6 +185,20 @@ void part2()
          integrParabolaMethod(f, 1000, 0, 1) - integrParabolaMethod(f, 1002, 0, 1),
     };
 
+    double graphvals[10] =
+    {
+        integrLeftSquareMethod(f, 1, 0, 1),
+        integrLeftSquareMethod(f, 2, 0, 1),
+        integrLeftSquareMethod(f, 5, 0, 1),
+        integrLeftSquareMethod(f, 10, 0, 1),
+        integrLeftSquareMethod(f, 20, 0, 1),
+        integrLeftSquareMethod(f, 50, 0, 1),
+        integrLeftSquareMethod(f, 100, 0, 1),
+        integrLeftSquareMethod(f, 200, 0, 1),
+        integrLeftSquareMethod(f, 500, 0, 1),
+        integrLeftSquareMethod(f, 1000, 0, 1),
+    };
+
     printf("Межа помилки: %.3e\n", MAX_INTEGRATION_ERROR);
     printf("N - кількість проміжків\n");
 
@@ -217,6 +231,18 @@ void part2()
     printf(" Метод правих прямокутників: %15.7e %15.7e %15.7e %s\n", results[51], results[52], results[53], fabs(results[53]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
     printf(" Метод трапецій:             %15.7e %15.7e %15.7e %s\n", results[54], results[55], results[56], fabs(results[56]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
     printf(" Метод парабол:              %15.7e %15.7e %15.7e %s\n", results[57], results[58], results[59], fabs(results[59]) <= MAX_INTEGRATION_ERROR ? "Так" : "Ні");
+
+    printf("\nДля графіку методу лівих прямокутників:\n");
+    printf("N = 1\t\tI = %15.7e\n", graphvals[0]);
+    printf("N = 2\t\tI = %15.7e\n", graphvals[1]);
+    printf("N = 5\t\tI = %15.7e\n", graphvals[2]);
+    printf("N = 10\t\tI = %15.7e\n", graphvals[3]);
+    printf("N = 20\t\tI = %15.7e\n", graphvals[4]);
+    printf("N = 50\t\tI = %15.7e\n", graphvals[5]);
+    printf("N = 100\t\tI = %15.7e\n", graphvals[6]);
+    printf("N = 200\t\tI = %15.7e\n", graphvals[7]);
+    printf("N = 500\t\tI = %15.7e\n", graphvals[8]);
+    printf("N = 1000\tI = %15.7e\n", graphvals[9]);
 
     pressEnterToContinue();
 }
